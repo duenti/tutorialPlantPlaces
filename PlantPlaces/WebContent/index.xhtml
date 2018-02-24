@@ -15,8 +15,8 @@
 		
 		Enter a plant name, and then choose Search.
 		<h:form>
-			<h:inputText value="#{plant.name}" />
-			<h:commandButton value="Submit" action="#{searchPlants.execute}"/>	
+			<p:autoComplete value="#{plant.name}" completeMethod="#{searchPlants.completePlants}" />
+			<p:commandButton value="Submit" actionListener="#{searchPlants.execute}"/>	
 		</h:form>
 		
 		
