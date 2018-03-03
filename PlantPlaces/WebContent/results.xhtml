@@ -14,7 +14,23 @@
 
 <h2>Plant Results for <h:outputLabel value="#{plantSearch.name}" /></h2>
 
-
+<h:form>
+<p:dataTable id="showPlants" var="plantResult" value="#{searchPlants.plants}" selectionMode="single"  rowKey="#{plantResult.guid}">
+	<p:ajax event="rowSelect" listener="#{searchPlants.onRowSelect}"  />
+	<p:column headerText="ID">
+		<h:outputText value="#{plantResult.guid}" />
+	</p:column>
+	<p:column headerText="Genus">
+		<h:outputText value="#{plantResult.genus}" />
+	</p:column>
+	<p:column headerText="Species">
+		<h:outputText value="#{plantResult.species}" />
+	</p:column>
+	<p:column headerText="Common">
+		<h:outputText value="#{plantResult.common}" />
+	</p:column>
+</p:dataTable>
+</h:form>
 
 
 <h:link value="Contact Us" outcome="contactUs"/>

@@ -1,4 +1,4 @@
-package com.plantplaces.dao;
+	package com.plantplaces.dao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,6 +69,10 @@ public class PlantDAOStub implements IPlantDAO {
 	public void delete(Plant plant) throws Exception {
 		// TODO Auto-generated method stub
 
+	}
+
+	public List<Plant> fetchPlants(Plant plant) {
+		return new ArrayList<Plant>();
 	}
 
 }

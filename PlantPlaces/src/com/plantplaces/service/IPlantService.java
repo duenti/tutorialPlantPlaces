@@ -3,6 +3,7 @@ package com.plantplaces.service;
 import java.util.List;
 
 import com.plantplaces.dto.Plant;
+import com.plantplaces.dto.Speciemen;
 
 /**
  * IPLantService includes all business related function for a Plant and related entities
@@ -25,4 +26,14 @@ public interface IPlantService {
 	 * @throws Exception if unable to save.
 	 */
 	void save(Plant plant) throws Exception;
+
+	/**
+	 * Return a list of plants that matches the given search criterea
+	 * @param plant a parameter that contains the search criterea
+	 * @return a list of matching plants
+	 */
+	List<Plant> fetchPlants(Plant plant);
+
+
+	void save(Speciemen speciemen) throws Exception;
 }

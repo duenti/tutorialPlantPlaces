@@ -1,5 +1,7 @@
 package com.plantplaces.dto;
 
+import java.io.Serializable;
+
 import javax.faces.bean.ManagedBean;
 import javax.inject.Named;
 
@@ -8,12 +10,13 @@ import org.springframework.context.annotation.Scope;
 @Named
 @ManagedBean
 @Scope("session")
-public class Plant {
+public class Plant implements Serializable{
 	private String name;
 	private String genus;
 	private String species;
 	private String cultivar;
 	private String common;
+	private int guid;
 
 	public String getGenus() {
 		return genus;
@@ -57,6 +60,14 @@ public class Plant {
 	
 	@Override
 	public String toString(){
-		return genus + " " + species + " " + cultivar + " " + common;
+		return String.valueOf(guid) + " " + genus + " " + species + " " + cultivar + " " + common;
+	}
+
+	public int getGuid() {
+		return guid;
+	}
+
+	public void setGuid(int guid) {
+		this.guid = guid;
 	}
 }
