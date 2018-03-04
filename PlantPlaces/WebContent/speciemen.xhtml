@@ -12,8 +12,34 @@
 		<ui:define name="content">
 		<h1>Speciemen</h1>
 		<em><h:outputLabel value="#{speciemenVO.plant.common}"/></em>
+
+		<!-- Var é a variavel de iteração da lista value -->
+		<h:form>
+			<p:dataTable id="showSpeciemens" var="speciemenResult" value="#{speciemenVO.plant.speciemens}" selectionMode="single"  rowKey="#{speciemenResult.id}">
+				<p:ajax event="rowSelect" listener="#{speciemenVO.onRowSelect}"  />
+				<p:column headerText="ID">
+					<h:outputText value="#{speciemenResult.id}" />
+				</p:column>
+				<p:column headerText="Latitude">
+					<h:outputText value="#{speciemenResult.latitude}" />
+				</p:column>
+				<p:column headerText="Longitude">
+					<h:outputText value="#{speciemenResult.longitude}" />
+				</p:column>
+				<p:column headerText="Planted By">
+					<h:outputText value="#{speciemenResult.plantedBy}" />
+				</p:column>
+				<p:column headerText="Planted Date">
+					<h:outputText value="#{speciemenResult.plantedDate}" />
+				</p:column>
+				<p:column headerText="Description">
+					<h:outputText value="#{speciemenResult.description}" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
 		
-		Enter a plant name, and then choose Search.
+		
+
 		<h:form>
 			<p:growl id="growl" showDetail="true" sticky="false" />
 			<div class="inputData">
@@ -28,6 +54,19 @@
 			</div>
 			<p:commandButton value="Submit" actionListener="#{speciemenVO.save}" update="growl" /><br />
 		</h:form>
+		
+		<img src="images/image.jpg"></img>
+	
+		<p:fieldset legend="Add a Photo to the Specimen">	
+			<h:form enctype="multipart/form-data">
+				<p:growl id="messages" showDetail="true" />
+				
+				<p:outputLabel value="Date Taken" /><p:calendar id="dateTaken" value="#{speciemenVO.photo.dateTaken}" /><br />
+				<p:outputLabel value="Contributor" /><p:inputText value="#{speciemenVO.photo.contributor}" /> <br />
+				<p:fileUpload value="#{speciemenVO.file}" mode="simple" skinSimple="true" />
+				<p:commandButton value="Submit" ajax="false" actionListener="#{speciemenVO.upload}" />
+			</h:form>
+		</p:fieldset>
 		<h4>Speciemen Management</h4>		
 		
 		

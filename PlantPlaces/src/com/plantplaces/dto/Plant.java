@@ -1,6 +1,7 @@
 package com.plantplaces.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.inject.Named;
@@ -17,6 +18,7 @@ public class Plant implements Serializable{
 	private String cultivar;
 	private String common;
 	private int guid;
+	private List<Speciemen> speciemens;
 
 	public String getGenus() {
 		return genus;
@@ -69,5 +71,13 @@ public class Plant implements Serializable{
 
 	public void setGuid(int guid) {
 		this.guid = guid;
+	}
+
+	public List<Speciemen> getSpeciemens() {
+		return speciemens;
+	}
+
+	public void setSpeciemens(List<Speciemen> speciemens) {
+		this.speciemens = speciemens;
 	}
 }

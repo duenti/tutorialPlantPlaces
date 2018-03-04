@@ -1,13 +1,20 @@
 package com.plantplaces.service;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import com.plantplaces.dao.IFileDAO;
 import com.plantplaces.dao.IPlantDAO;
 import com.plantplaces.dao.ISpeciemenDAO;
+import com.plantplaces.dto.Photo;
 import com.plantplaces.dto.Plant;
 import com.plantplaces.dto.Speciemen;
 
@@ -20,6 +27,9 @@ public class PlantService implements IPlantService {
 	
 	@Inject
 	private ISpeciemenDAO speciemenDAO;
+	
+	@Inject
+	private IFileDAO fileDAO;
 	
 	@Override
 	public List<Plant> filterPlants(String filter) {
@@ -69,4 +79,32 @@ public class PlantService implements IPlantService {
 		this.plantDAO = plantDAO;
 	}
 
+	@Override
+	public void loadSpeciemens(Plant plant) {
+		// TODO Auto-generated method stub
+		List<Speciemen> speciemens = speciemenDAO.fetchByPlantId(plant.getGuid());
+		plant.setSpeciemens(speciemens);
+	}
+	
+	public void savePhoto(Photo photo, InputStream inputStream) throws IOException{
+		File directory = new File("/home/neli/git/PlantPlaces/WebContent/images");
+		String uniqueImageName = getUniqueImageName();
+		File file = new File(directory, uniqueImageName);
+		fileDAO.save(inputStream, file);
+		
+		photo.setUri(uniqueImageName);
+		//Eventually, save the photo to the database
+	}
+
+	private String getUniqueImageName() {
+		String imagePrefix = "PlantPlaces";
+		String imageSufix = ".jpg";
+		String middle = "";
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmss");
+		middle = sdf.format(new Date());
+		
+		return imagePrefix + middle + imageSufix;
+	}
+	
 }

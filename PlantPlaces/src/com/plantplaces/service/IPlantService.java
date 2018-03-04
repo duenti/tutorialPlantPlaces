@@ -1,7 +1,10 @@
 package com.plantplaces.service;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
+import com.plantplaces.dto.Photo;
 import com.plantplaces.dto.Plant;
 import com.plantplaces.dto.Speciemen;
 
@@ -36,4 +39,13 @@ public interface IPlantService {
 
 
 	void save(Speciemen speciemen) throws Exception;
+
+	/**
+	 * Load speciemens for a given plant.
+	 * @param plant
+	 */
+	public void loadSpeciemens(Plant plant);
+
+
+	public void savePhoto(Photo photo, InputStream inputStream) throws IOException;
 }
