@@ -9,12 +9,10 @@ import org.hibernate.Session;
 import com.plantplaces.dto.Photo;
 import com.plantplaces.dto.Speciemen;
 
-public interface ISpeciemenDAO {
+public interface IPhotoDAO {
 
-	List<Speciemen> fetchByPlantId(int plantId);
-
-	void insert(Session session, Speciemen dto) throws Exception;
-	
-	public void save(Speciemen dto) throws Exception;
+	void insert(Session session, Photo dto) throws Exception;
+	public void save(Photo dto) throws Exception;
+	List<Photo> fetchPhotos(Speciemen speciemen);
 
 }

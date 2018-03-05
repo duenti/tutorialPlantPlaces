@@ -2,6 +2,7 @@ package com.plantplaces.ui;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -32,6 +33,8 @@ public class SpeciemenVO {
 	
 	@Inject
 	private IPlantService plantService;
+	
+	private List<Photo> photos;
 	
 	private UploadedFile file;
 
@@ -77,6 +80,16 @@ public class SpeciemenVO {
 		
 		//Push the selected speciemen into SpeciemenVO
 		setSpeciemen(speciemen);
+		
+		//Now that we selected the specimen, let's find the maching photos.
+		photos = plantService.fetchPhotos(speciemen);
+		
+		try {
+ 			FacesContext.getCurrentInstance().getExternalContext().redirect("speciemen.xhtml");
+ 		} catch (IOException e) {
+ 			// TODO Auto-generated catch block
+ 			e.printStackTrace();
+ 		}
 	}
 	
 	public UploadedFile getFile(){
@@ -87,7 +100,7 @@ public class SpeciemenVO {
 		this.file = file;
 	}
 	
-	public void upload(){
+	public void upload() throws Exception{
 		if(speciemen.getId() == 0){
 			FacesMessage message = new FacesMessage("You have not yet selected a specimen. Please select one before saving the image.");
 			FacesContext.getCurrentInstance().addMessage(null, message);
@@ -118,6 +131,14 @@ public class SpeciemenVO {
 
 	public void setPhoto(Photo photo) {
 		this.photo = photo;
+	}
+
+	public List<Photo> getPhotos() {
+		return photos;
+	}
+
+	public void setPhotos(List<Photo> photos) {
+		this.photos = photos;
 	}
 }
 	

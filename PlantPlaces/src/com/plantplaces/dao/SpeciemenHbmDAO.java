@@ -8,7 +8,6 @@ import javax.inject.Named;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-import com.plantplaces.dto.Plant;
 import com.plantplaces.dto.Speciemen;
 
 /**
@@ -17,22 +16,8 @@ import com.plantplaces.dto.Speciemen;
  *
  */
 @Named
-public class SpeciemenHbmDAO implements ISpeciemenDAO {
+public class SpeciemenHbmDAO extends PlantPlacesHbmDAO<Speciemen> implements ISpeciemenDAO {
 	//Precisou do Named pq ISpeciemenDAO já foi injetado em outra classe
-	
-	/* (non-Javadoc)
-	 * @see com.plantplaces.dao.ISpeciemenDAO#insert(com.plantplaces.dto.Speciemen)
-	 */
-	@Override
-	public void insert(Speciemen speciemen) throws Exception{
-		//Save the plant to the database
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		session.beginTransaction();
-		
-		session.save(speciemen);
-		
-		session.getTransaction().commit();
-	}
 	
 	@Override
 	public List<Speciemen> fetchByPlantId(int plantId){
@@ -45,5 +30,11 @@ public class SpeciemenHbmDAO implements ISpeciemenDAO {
 		List<Speciemen> speciemen = Collections.checkedList(list, Speciemen.class);
 		
 		return speciemen;
+	}
+
+	@Override
+	public void insert(Session session, Speciemen dto) throws Exception {
+		// TODO Auto-generated method stub
+		session.save(dto);
 	}
 }

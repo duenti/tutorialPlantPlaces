@@ -1,22 +1,27 @@
 package com.plantplaces.service;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.plantplaces.dao.IFileDAO;
+import com.plantplaces.dao.IPhotoDAO;
 import com.plantplaces.dao.IPlantDAO;
 import com.plantplaces.dao.ISpeciemenDAO;
 import com.plantplaces.dto.Photo;
 import com.plantplaces.dto.Plant;
 import com.plantplaces.dto.Speciemen;
+
+import net.coobird.thumbnailator.Thumbnails;
+import net.coobird.thumbnailator.geometry.Positions;
 
 @Named
 public class PlantService implements IPlantService {
@@ -30,6 +35,9 @@ public class PlantService implements IPlantService {
 	
 	@Inject
 	private IFileDAO fileDAO;
+	
+	@Inject
+	private IPhotoDAO photoDAO;
 	
 	@Override
 	public List<Plant> filterPlants(String filter) {
@@ -56,12 +64,12 @@ public class PlantService implements IPlantService {
 		if(plant.getGenus() == null || plant.getGenus().isEmpty()){
 			throw new Exception("Genus required");
 		}
-		plantDAO.insert(plant);
+		plantDAO.save(plant);
 	}
 
 	@Override
 	public void save(Speciemen speciemen) throws Exception{
-		speciemenDAO.insert(speciemen);
+		speciemenDAO.save(speciemen);
 	}
 	
 	@Override
@@ -86,14 +94,23 @@ public class PlantService implements IPlantService {
 		plant.setSpeciemens(speciemens);
 	}
 	
-	public void savePhoto(Photo photo, InputStream inputStream) throws IOException{
-		File directory = new File("/home/neli/git/PlantPlaces/WebContent/images");
+	public void savePhoto(Photo photo, InputStream inputStream) throws Exception{
+		File directory = new File("/home/neli/git/PlantPlaces/WebContent/resources/images");
 		String uniqueImageName = getUniqueImageName();
 		File file = new File(directory, uniqueImageName);
 		fileDAO.save(inputStream, file);
 		
+		File thumbnailDirectory = new File("/home/neli/git/PlantPlaces/WebContent/resources/thumbnails");
+		File thumbnail = new File(thumbnailDirectory, uniqueImageName);
+		
+		BufferedImage watermark = ImageIO.read(new File("/home/neli/git/PlantPlaces/WebContent/resources/watermark.png"));
+		Thumbnails.of(file).scale(1).watermark(Positions.BOTTOM_RIGHT, watermark, 0.9f).toFile(file);
+		
+		Thumbnails.of(file).size(100, 100).toFile(thumbnail);
+		
 		photo.setUri(uniqueImageName);
 		//Eventually, save the photo to the database
+		photoDAO.save(photo);
 	}
 
 	private String getUniqueImageName() {
@@ -105,6 +122,11 @@ public class PlantService implements IPlantService {
 		middle = sdf.format(new Date());
 		
 		return imagePrefix + middle + imageSufix;
+	}
+	
+	@Override
+	public List<Photo> fetchPhotos(Speciemen speciemen){
+		return photoDAO.fetchPhotos(speciemen);
 	}
 	
 }
